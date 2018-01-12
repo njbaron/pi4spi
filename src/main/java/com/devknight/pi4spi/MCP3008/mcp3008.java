@@ -17,7 +17,7 @@ public class mcp3008 {
     private double resistor1 = 10000;
     private double resistor2 = 10000;
 
-    public mcp3008(int clockpin, int mosipin, int misopin, int cspin) {
+    public mcp3008(int clockpin, int misopin, int mosipin, int cspin) {
         GpioController gpio = GpioFactory.getInstance();
         this.clockpin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(clockpin),PinState.LOW);
         this.mosipin = gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(mosipin), PinState.LOW);
