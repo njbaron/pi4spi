@@ -10,7 +10,6 @@ public class mcp3008 {
     private GpioPinDigitalOutput cspin;
 
     private static final double maxGpioVoltage = 3.3;
-    private static final double minGpioVoltage = 0.0;
 
     private double maxInputVoltage = 3.3;
 
