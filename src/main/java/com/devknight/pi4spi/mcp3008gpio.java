@@ -63,21 +63,33 @@ public class mcp3008gpio {
         // Create gpio controller
         final GpioController gpio = GpioFactory.getInstance();
 
-        // Create custom MCP3008 analog gpio provider
+        // Create custom MCP3008 analog gpio provider1
         // we must specify which chip select (CS) that that ADC chip is physically connected to.
-        final AdcGpioProvider provider = new MCP3008GpioProvider(SpiChannel.CS0);
+        final AdcGpioProvider provider1 = new MCP3008GpioProvider(SpiChannel.CS0);
+        final AdcGpioProvider provider2 = new MCP3008GpioProvider(SpiChannel.CS1);
 
         // Provision gpio analog input pins for all channels of the MCP3008.
         // (you don't have to define them all if you only use a subset in your project)
-        final GpioPinAnalogInput inputs[] = {
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH0, "MyAnalogInput-CH0"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH1, "MyAnalogInput-CH1"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH2, "MyAnalogInput-CH2"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH3, "MyAnalogInput-CH3"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH4, "MyAnalogInput-CH4"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH5, "MyAnalogInput-CH5"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH6, "MyAnalogInput-CH6"),
-                gpio.provisionAnalogInputPin(provider, MCP3008Pin.CH7, "MyAnalogInput-CH7")
+        final GpioPinAnalogInput inputs1[] = {
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH0, "MyAnalogInput-CH0"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH1, "MyAnalogInput-CH1"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH2, "MyAnalogInput-CH2"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH3, "MyAnalogInput-CH3"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH4, "MyAnalogInput-CH4"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH5, "MyAnalogInput-CH5"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH6, "MyAnalogInput-CH6"),
+                gpio.provisionAnalogInputPin(provider1, MCP3008Pin.CH7, "MyAnalogInput-CH7")
+        };
+
+        final GpioPinAnalogInput inputs2[] = {
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH0, "MyAnalogInput-CH8"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH1, "MyAnalogInput-CH9"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH2, "MyAnalogInput-CH10"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH3, "MyAnalogInput-CH11"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH4, "MyAnalogInput-CH12"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH5, "MyAnalogInput-CH13"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH6, "MyAnalogInput-CH14"),
+                gpio.provisionAnalogInputPin(provider2, MCP3008Pin.CH7, "MyAnalogInput-CH15")
         };
 
 
@@ -85,7 +97,8 @@ public class mcp3008gpio {
         // a 'GpioPinAnalogValueChangeEvent' is raised.  This is used to prevent unnecessary
         // event dispatching for an analog input that may have an acceptable or expected
         // range of value drift.
-        provider.setEventThreshold(100, inputs); // all inputs; alternatively you can set thresholds on each input discretely
+        provider1.setEventThreshold(100, inputs1); // all inputs; alternatively you can set thresholds on each input discretely
+        provider2.setEventThreshold(100, inputs2); // all inputs; alternatively you can set thresholds on each input discretely
 
         // Set the background monitoring interval timer for the underlying framework to
         // interrogate the ADC chip for input conversion values.  The acceptable monitoring
@@ -94,10 +107,11 @@ public class mcp3008gpio {
         // on a regular basis.  The higher this value the slower your application will get
         // analog input value change events/notifications.  Try to find a reasonable balance
         // for your project needs.
-        provider.setMonitorInterval(250); // milliseconds
+        provider1.setMonitorInterval(250); // milliseconds
+        provider2.setMonitorInterval(250); // milliseconds
 
         // Print current analog input conversion values from each input channel
-        for(GpioPinAnalogInput input : inputs){
+        for(GpioPinAnalogInput input : inputs1){
             System.out.println("<INITIAL VALUE> [" + input.getName() + "] : RAW VALUE = " + input.getValue());
         }
 
@@ -115,7 +129,8 @@ public class mcp3008gpio {
         };
 
         // Register the gpio analog input listener for all input pins
-        gpio.addListener(listener, inputs);
+        gpio.addListener(listener, inputs1);
+        gpio.addListener(listener, inputs2);
 
         // Keep this sample program running for 10 minutes
         for (int count = 0; count < 600; count++) {
