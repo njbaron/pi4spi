@@ -97,8 +97,8 @@ public class mcp3008gpio {
         // a 'GpioPinAnalogValueChangeEvent' is raised.  This is used to prevent unnecessary
         // event dispatching for an analog input that may have an acceptable or expected
         // range of value drift.
-        provider1.setEventThreshold(100, inputs1); // all inputs; alternatively you can set thresholds on each input discretely
-        provider2.setEventThreshold(100, inputs2); // all inputs; alternatively you can set thresholds on each input discretely
+        provider1.setEventThreshold(30, inputs1); // all inputs; alternatively you can set thresholds on each input discretely
+        provider2.setEventThreshold(30, inputs2); // all inputs; alternatively you can set thresholds on each input discretely
 
         // Set the background monitoring interval timer for the underlying framework to
         // interrogate the ADC chip for input conversion values.  The acceptable monitoring
